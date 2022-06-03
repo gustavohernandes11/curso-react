@@ -1,0 +1,35 @@
+import './App.css';
+import React, { useContext, createContext, useReducer } from 'react'
+import data from './contexts/GlobalContext/data.js'
+
+const GlobalContext = createContext()
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CHANGE_TITLE':
+      return { ...state, value: 'mudou' }
+    default:
+      return { ...state }
+  }
+
+
+}
+
+const Title = ({ onClick }) => {
+  const context = useContext(GlobalContext)
+  return (
+    <h1 onClick={onClick}>{context.state.value}</h1>
+  )
+}
+
+function App() {
+  const [state, dispatch] = useReducer(reducer, data)
+  return (
+    <GlobalContext.Provider value={{state, dispatch}}>
+      <div className="App">
+        <Title onClick={() => dispatch({type: 'CHANGE_TITLE'})} />
+      </div>
+    </GlobalContext.Provider>
+  );
+}
+
+export default App;
